@@ -2,8 +2,6 @@ package com.springsecurityapp.springsecurityapp.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,13 +19,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class RolesEntity {
+public class PermissionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
-
-    @Column(name = "role_name")
-    @Enumerated(EnumType.STRING)
-    private RoleEnum roleEnum;
-
+    private Long id;
+    
+    @Column(unique = true, nullable = false, updatable = false)   
+    private String name;
 }
