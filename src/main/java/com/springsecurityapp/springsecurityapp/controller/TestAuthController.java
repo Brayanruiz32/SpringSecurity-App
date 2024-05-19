@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/method")
 public class TestAuthController {
 
     @GetMapping("/get")

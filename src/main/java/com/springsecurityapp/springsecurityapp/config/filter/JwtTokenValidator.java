@@ -26,12 +26,10 @@ public class JwtTokenValidator extends OncePerRequestFilter{
     //creamos la variable jwtutils
     private JwtUtils jwtUtils;
 
-    
     //la inicializamos en el constructor 
     public JwtTokenValidator(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
-
 
 
     @Override
