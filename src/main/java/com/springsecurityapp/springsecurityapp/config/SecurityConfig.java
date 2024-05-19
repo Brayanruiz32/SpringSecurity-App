@@ -24,14 +24,23 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.springsecurityapp.springsecurityapp.config.filter.JwtTokenValidator;
 import com.springsecurityapp.springsecurityapp.service.UserDetailsServiceImpl;
+import com.springsecurityapp.springsecurityapp.util.JwtUtils;
 
 @Configuration
 @EnableWebSecurity
 // me permite trabajar con springboot security mediante anotaciones
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+
+
 
     // el componente que pasa por 12 filtros la autenticacion del usuario (1)
     @Bean
@@ -58,6 +67,9 @@ public class SecurityConfig {
                     http.anyRequest().denyAll();
                     // http.anyRequest().authenticated();
                 })
+                .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
+
+
                 // NOTA: por el patron de construccion builder
                 .build();
     }

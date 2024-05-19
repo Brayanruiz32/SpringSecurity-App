@@ -1,6 +1,8 @@
 package com.springsecurityapp.springsecurityapp.util;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -73,7 +75,10 @@ public class JwtUtils {
     public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName){
         return decodedJWT.getClaim(claimName);
     }
-
+    //extraemos todos los claims posibles
+    public Map<String, Claim> getAllClaims(DecodedJWT decodedJWT){
+        return decodedJWT.getClaims();
+    }
 
 
 }
