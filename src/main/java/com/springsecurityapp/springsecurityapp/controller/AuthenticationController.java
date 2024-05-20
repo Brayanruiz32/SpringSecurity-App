@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springsecurityapp.springsecurityapp.controller.dto.AuthCreateUserRequest;
 import com.springsecurityapp.springsecurityapp.controller.dto.AuthLoginRequest;
 import com.springsecurityapp.springsecurityapp.controller.dto.AuthResponse;
 import com.springsecurityapp.springsecurityapp.service.UserDetailsServiceImpl;
@@ -25,8 +26,9 @@ public class AuthenticationController {
 
     //metodo para crear un usuario
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthResponse> register(AuthCreateUser authCreateUser){
-        return new ResponseEntity<>(userDetailService.createUser(), HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> register(@RequestBody @Valid AuthCreateUserRequest authCreateUser){
+        
+        return new ResponseEntity<>(userDetailService.createUser(authCreateUser), HttpStatus.CREATED);
     }
 
 
@@ -37,10 +39,5 @@ public class AuthenticationController {
         return new ResponseEntity<>(userDetailService.loginUser(userRequest), HttpStatus.OK);
 
     }
-
-
-
-    
-
 
 }
