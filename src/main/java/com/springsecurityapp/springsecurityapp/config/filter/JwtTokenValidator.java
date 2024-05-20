@@ -51,7 +51,6 @@ public class JwtTokenValidator extends OncePerRequestFilter{
             String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
 
             Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
-
             //creamos un contexto nuevo 
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             //creamos un objeto nuevo de username and password authentication
@@ -60,6 +59,7 @@ public class JwtTokenValidator extends OncePerRequestFilter{
             context.setAuthentication(authenticationToken);
 
             SecurityContextHolder.setContext(context);
+            System.out.println("estoy dentro del JwtTokenValidator");
         }
 
         filterChain.doFilter(request, response);  

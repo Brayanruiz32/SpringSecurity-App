@@ -39,9 +39,6 @@ public class SecurityConfig {
     @Autowired
     private JwtUtils jwtUtils;
 
-
-
-
     // el componente que pasa por 12 filtros la autenticacion del usuario (1)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -56,19 +53,22 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // NOTA: se autoriza el metodo y luego la URL
                 .authorizeHttpRequests(http -> {
-                    // configurar los endpoints publicos
-                    http.requestMatchers(HttpMethod.GET, "/auth/get").permitAll();
+
                     // configurar los endpoints privados
-                    http.requestMatchers(HttpMethod.POST, "/auth/post").hasAnyRole("ADMIN", "DEVELOPER");
-                    //http.requestMatchers(HttpMethod.POST, "/auth/post").hasAnyAuthority("CREATE", "READ");
-                    //patch
-                    http.requestMatchers(HttpMethod.PATCH, "/auth/patch").hasAnyAuthority("REFACTOR");
+                    http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/method/post").hasAnyRole("ADMIN", "DEVELOPER");
+                    // http.requestMatchers(HttpMethod.POST, "/auth/post").hasAnyAuthority("CREATE",
+                    // "READ");
+                    // patch
+                    http.requestMatchers(HttpMethod.PATCH, "/method/patch").hasAnyAuthority("REFACTOR");
+
+                    // configurar los endpoints publicos
+                    http.requestMatchers(HttpMethod.GET, "/method/get").hasAnyAuthority("READ");
                     // configurar los endpoints no especificados
                     http.anyRequest().denyAll();
                     // http.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
-
 
                 // NOTA: por el patron de construccion builder
                 .build();
@@ -91,7 +91,7 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());// el password
         provider.setUserDetailsService(userDetailsService);// el user
-        System.out.println(provider);
+
         return provider;
     }
 
@@ -101,7 +101,7 @@ public class SecurityConfig {
     // componente para decodificar la contraseña, super imporntate para hacer un
     // managament de la constraseña
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
